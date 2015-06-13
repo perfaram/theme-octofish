@@ -12,7 +12,7 @@
 #
 # You can override some default options in your config.fish:
 #
-#     set -g theme_display_git yes
+#     set -g theme_display_duration yes
 #     set -g theme_display_virtualenv no
 #     set -g theme_display_ruby no
 #     set -g theme_display_padlock yes

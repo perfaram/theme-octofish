@@ -413,7 +413,6 @@ function prompt_cmd_duration -d 'Displays the elapsed time of last command'
 end
 
 function fish_right_prompt --description 'Write out the right side prompt'
-	if [ "$theme_display_right" = 'yes' ]
 	set -g __octofish_git_prompt_show_informative_status 1
 	set -g __octofish_git_prompt_showdirtystate 'yes'
 	set -g __octofish_git_prompt_showstashstate 'yes'
@@ -431,9 +430,9 @@ function fish_right_prompt --description 'Write out the right side prompt'
 	set -g __octofish_git_prompt_char_stashstate '↩'
 	set -g __octofish_git_prompt_char_conflictedstate "✖"
 	set -g __octofish_git_prompt_char_cleanstate "✔"
-
+	if [ "$theme_display_duration" = 'yes' ]
 	printf "%s" (prompt_cmd_duration)
-
+	end
 	set -l repo_info (command git rev-parse --git-dir --is-inside-git-dir --is-bare-repository --is-inside-work-tree --short HEAD ^/dev/null)
 
 	if not test -n "$repo_info"
@@ -546,5 +545,4 @@ function fish_right_prompt --description 'Write out the right side prompt'
 	set -e __octofish_RIGHT_BCOLOR
 	printf " "
 	set_color -b normal normal
-	end
 end
