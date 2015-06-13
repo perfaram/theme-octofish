@@ -413,7 +413,7 @@ function prompt_cmd_duration -d 'Displays the elapsed time of last command'
 end
 
 function fish_right_prompt --description 'Write out the right side prompt'
-	if [ "$theme_display_padlock" = 'yes' ]
+	if [ "$theme_display_right" = 'yes' ]
 	set -g __octofish_git_prompt_show_informative_status 1
 	set -g __octofish_git_prompt_showdirtystate 'yes'
 	set -g __octofish_git_prompt_showstashstate 'yes'
