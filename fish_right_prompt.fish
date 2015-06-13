@@ -22,8 +22,8 @@ function prompt_arrow_right_close --argument-name BG FG END -d "close the previo
 end
 
 
-function __fish_git_prompt_show_upstream --description "Helper function for __fish_git_prompt"
-	set -l show_upstream $__fish_git_prompt_showupstream
+function __octofish_git_prompt_show_upstream --description "Helper function for __octofish_git_prompt"
+	set -l show_upstream $__octofish_git_prompt_showupstream
 	set -l svn_prefix # For better SVN upstream information
 	set -l informative
 
@@ -35,7 +35,7 @@ function __fish_git_prompt_show_upstream --description "Helper function for __fi
 	set -l name
 
 	# Default to informative if show_informative_status is set
-	if test -n "$__fish_git_prompt_show_informative_status"
+	if test -n "$__octofish_git_prompt_show_informative_status"
 		set informative 1
 	end
 
@@ -149,9 +149,9 @@ function __fish_git_prompt_show_upstream --description "Helper function for __fi
 	# calculate the result
 	if test -n "$verbose"
 		# Verbose has a space by default
-		set -l prefix "$___fish_git_prompt_char_upstream_prefix"
+		set -l prefix "$___octofish_git_prompt_char_upstream_prefix"
 		# Using two underscore version to check if user explicitly set to nothing
-		if not set -q __fish_git_prompt_char_upstream_prefix
+		if not set -q __octofish_git_prompt_char_upstream_prefix
 			set -l prefix " "
 		end
 
@@ -159,13 +159,13 @@ function __fish_git_prompt_show_upstream --description "Helper function for __fi
 		switch "$count"
 		case '' # no upstream
 		case "0	0" # equal to upstream
-			echo "$prefix$___fish_git_prompt_char_upstream_equal"
+			echo "$prefix$___octofish_git_prompt_char_upstream_equal"
 		case "0	*" # ahead of upstream
-			echo "$prefix$___fish_git_prompt_char_upstream_ahead$ahead"
+			echo "$prefix$___octofish_git_prompt_char_upstream_ahead$ahead"
 		case "*	0" # behind upstream
-			echo "$prefix$___fish_git_prompt_char_upstream_behind$behind"
+			echo "$prefix$___octofish_git_prompt_char_upstream_behind$behind"
 		case '*' # diverged from upstream
-			echo "$prefix$___fish_git_prompt_char_upstream_diverged$ahead-$behind"
+			echo "$prefix$___octofish_git_prompt_char_upstream_diverged$ahead-$behind"
 		end
 		if test -n "$count" -a -n "$name"
 			echo " "(command git rev-parse --abbrev-ref "$upstream" ^/dev/null)
@@ -176,56 +176,56 @@ function __fish_git_prompt_show_upstream --description "Helper function for __fi
 		case '' # no upstream
 		case "0	0" # equal to upstream
 		case "0	*" # ahead of upstream
-			echo "$___fish_git_prompt_char_upstream_prefix$___fish_git_prompt_char_upstream_ahead$ahead"
+			echo "$___octofish_git_prompt_char_upstream_prefix$___octofish_git_prompt_char_upstream_ahead$ahead"
 		case "*	0" # behind upstream
-			echo "$___fish_git_prompt_char_upstream_prefix$___fish_git_prompt_char_upstream_behind$behind"
+			echo "$___octofish_git_prompt_char_upstream_prefix$___octofish_git_prompt_char_upstream_behind$behind"
 		case '*' # diverged from upstream
-			echo "$___fish_git_prompt_char_upstream_prefix$___fish_git_prompt_char_upstream_ahead$ahead$___fish_git_prompt_char_upstream_behind$behind"
+			echo "$___octofish_git_prompt_char_upstream_prefix$___octofish_git_prompt_char_upstream_ahead$ahead$___octofish_git_prompt_char_upstream_behind$behind"
 		end
 	else
 		switch "$count"
 		case '' # no upstream
 		case "0	0" # equal to upstream
-			echo "$___fish_git_prompt_char_upstream_prefix$___fish_git_prompt_char_upstream_equal"
+			echo "$___octofish_git_prompt_char_upstream_prefix$___octofish_git_prompt_char_upstream_equal"
 		case "0	*" # ahead of upstream
-                        echo "$___fish_git_prompt_char_upstream_prefix$___fish_git_prompt_char_upstream_ahead"
+                        echo "$___octofish_git_prompt_char_upstream_prefix$___octofish_git_prompt_char_upstream_ahead"
 		case "*	0" # behind upstream
-                        echo "$___fish_git_prompt_char_upstream_prefix$___fish_git_prompt_char_upstream_behind"
+                        echo "$___octofish_git_prompt_char_upstream_prefix$___octofish_git_prompt_char_upstream_behind"
 		case '*' # diverged from upstream
-                        echo "$___fish_git_prompt_char_upstream_prefix$___fish_git_prompt_char_upstream_diverged"
+                        echo "$___octofish_git_prompt_char_upstream_prefix$___octofish_git_prompt_char_upstream_diverged"
 		end
 	end
 end
 
 ### helper functions
 
-function __fish_git_prompt_staged --description "__fish_git_prompt helper, tells whether or not the current branch has staged files"
+function __octofish_git_prompt_staged --description "__octofish_git_prompt helper, tells whether or not the current branch has staged files"
 	set -l short_sha $argv[1]
 
 	set -l staged
 
 	if test -n "$short_sha"
-		command git diff-index --cached --quiet HEAD --; or set staged $___fish_git_prompt_char_stagedstate
+		command git diff-index --cached --quiet HEAD --; or set staged $___octofish_git_prompt_char_stagedstate
 	else
-		set staged $___fish_git_prompt_char_invalidstate
+		set staged $___octofish_git_prompt_char_invalidstate
 	end
 	echo $staged
 end
 
-function __fish_git_prompt_dirty --description "__fish_git_prompt helper, tells whether or not the current branch has tracked, modified files"
+function __octofish_git_prompt_dirty --description "__octofish_git_prompt helper, tells whether or not the current branch has tracked, modified files"
 	set -l dirty
 
 	set -l os
 	command git diff --no-ext-diff --quiet --exit-code
 	set os $status
 	if test $os -ne 0
-		set dirty $___fish_git_prompt_char_dirtystate
+		set dirty $___octofish_git_prompt_char_dirtystate
 	end
 	echo $dirty
 end
 
 # Keeping these together avoids many duplicated checks
-function __fish_git_prompt_operation_branch_bare --description "__fish_git_prompt helper, returns the current Git operation and branch"
+function __octofish_git_prompt_operation_branch_bare --description "__octofish_git_prompt helper, returns the current Git operation and branch"
 	# This function is passed the full repo_info array
 	set -l git_dir         $argv[1]
 	set -l inside_gitdir   $argv[2]
@@ -283,7 +283,7 @@ function __fish_git_prompt_operation_branch_bare --description "__fish_git_promp
 		set branch (command git symbolic-ref HEAD ^/dev/null; set os $status)
 		if test $os -ne 0
 			set detached yes
-			set branch (switch "$__fish_git_prompt_describe_style"
+			set branch (switch "$__octofish_git_prompt_describe_style"
 						case contains
 							command git describe --contains HEAD
 						case branch
@@ -319,13 +319,13 @@ function __fish_git_prompt_operation_branch_bare --description "__fish_git_promp
 	echo $bare
 end
 
-function __fish_git_prompt_set_char
+function __octofish_git_prompt_set_char
 	set -l user_variable_name "$argv[1]"
 	set -l char $argv[2]
 	set -l user_variable $$user_variable_name
 
 	if test (count $argv) -ge 3
-		if test -n "$__fish_git_prompt_show_informative_status"
+		if test -n "$__octofish_git_prompt_show_informative_status"
 			set char $argv[3]
 		end
 	end
@@ -338,34 +338,34 @@ function __fish_git_prompt_set_char
 	end
 end
 
-function __fish_git_prompt_validate_chars --description "__fish_git_prompt helper, checks char variables"
+function __octofish_git_prompt_validate_chars --description "__octofish_git_prompt helper, checks char variables"
 
-	__fish_git_prompt_set_char __fish_git_prompt_char_cleanstate        '✔'
-	__fish_git_prompt_set_char __fish_git_prompt_char_dirtystate        '*' '✚'
-	__fish_git_prompt_set_char __fish_git_prompt_char_invalidstate      '#' '✖'
-	__fish_git_prompt_set_char __fish_git_prompt_char_stagedstate       '+' '●'
-	__fish_git_prompt_set_char __fish_git_prompt_char_stashstate        '$'
-	__fish_git_prompt_set_char __fish_git_prompt_char_stateseparator    ' ' '|'
-	__fish_git_prompt_set_char __fish_git_prompt_char_untrackedfiles    '%' '…'
-	__fish_git_prompt_set_char __fish_git_prompt_char_upstream_ahead    '>' '↑'
-	__fish_git_prompt_set_char __fish_git_prompt_char_upstream_behind   '<' '↓'
-	__fish_git_prompt_set_char __fish_git_prompt_char_upstream_diverged '<>'
-	__fish_git_prompt_set_char __fish_git_prompt_char_upstream_equal    '='
-	__fish_git_prompt_set_char __fish_git_prompt_char_upstream_prefix   ''
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_cleanstate        '✔'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_dirtystate        '*' '✚'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_invalidstate      '#' '✖'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_stagedstate       '+' '●'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_stashstate        '$'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_stateseparator    ' ' '|'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_untrackedfiles    '%' '…'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_upstream_ahead    '>' '↑'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_upstream_behind   '<' '↓'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_upstream_diverged '<>'
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_upstream_equal    '='
+	__octofish_git_prompt_set_char __octofish_git_prompt_char_upstream_prefix   ''
 
 end
 
 
 set -l varargs
 for var in repaint describe_style show_informative_status showdirtystate showstashstate showuntrackedfiles showupstream
-	set varargs $varargs --on-variable __fish_git_prompt_$var
+	set varargs $varargs --on-variable __octofish_git_prompt_$var
 end
-function __fish_git_prompt_repaint $varargs --description "Event handler, repaints prompt when functionality changes"
+function __octofish_git_prompt_repaint $varargs --description "Event handler, repaints prompt when functionality changes"
 	if status --is-interactive
-		if test $argv[3] = __fish_git_prompt_show_informative_status
+		if test $argv[3] = __octofish_git_prompt_show_informative_status
 			# Clear characters that have different defaults with/without informative status
 			for name in cleanstate dirtystate invalidstate stagedstate stateseparator untrackedfiles upstream_ahead upstream_behind
-				set -e ___fish_git_prompt_char_$name
+				set -e ___octofish_git_prompt_char_$name
 			end
 		end
 
@@ -375,19 +375,19 @@ end
 
 set -l varargs
 for var in '' _prefix _suffix _bare _merging _cleanstate _invalidstate _upstream _flags _branch _dirtystate _stagedstate _branch_detached _stashstate _untrackedfiles
-	set varargs $varargs --on-variable __fish_git_prompt_color$var
+	set varargs $varargs --on-variable __octofish_git_prompt_color$var
 end
-set varargs $varargs --on-variable __fish_git_prompt_showcolorhints
-function __fish_git_prompt_repaint_color $varargs --description "Event handler, repaints prompt when any color changes"
+set varargs $varargs --on-variable __octofish_git_prompt_showcolorhints
+function __octofish_git_prompt_repaint_color $varargs --description "Event handler, repaints prompt when any color changes"
 	if status --is-interactive
 		set -l var $argv[3]
 		set -e _$var
 		set -e _{$var}_done
-		if test $var = __fish_git_prompt_color -o $var = __fish_git_prompt_color_flags -o $var = __fish_git_prompt_showcolorhints
+		if test $var = __octofish_git_prompt_color -o $var = __octofish_git_prompt_color_flags -o $var = __octofish_git_prompt_showcolorhints
 			# reset all the other colors too
 			for name in prefix suffix bare merging branch dirtystate stagedstate invalidstate stashstate untrackedfiles upstream flags
-				set -e ___fish_git_prompt_color_$name
-				set -e ___fish_git_prompt_color_{$name}_done
+				set -e ___octofish_git_prompt_color_$name
+				set -e ___octofish_git_prompt_color_{$name}_done
 			end
 		end
 		commandline -f repaint ^/dev/null
@@ -396,9 +396,9 @@ end
 
 set -l varargs
 for var in cleanstate dirtystate invalidstate stagedstate stashstate stateseparator untrackedfiles upstream_ahead upstream_behind upstream_diverged upstream_equal upstream_prefix
-	set varargs $varargs --on-variable __fish_git_prompt_char_$var
+	set varargs $varargs --on-variable __octofish_git_prompt_char_$var
 end
-function __fish_git_prompt_repaint_char $varargs --description "Event handler, repaints prompt when any char changes"
+function __octofish_git_prompt_repaint_char $varargs --description "Event handler, repaints prompt when any char changes"
 	if status --is-interactive
 		set -e _$argv[3]
 		commandline -f repaint ^/dev/null
@@ -413,23 +413,24 @@ function prompt_cmd_duration -d 'Displays the elapsed time of last command'
 end
 
 function fish_right_prompt --description 'Write out the right side prompt'
-	set -g __fish_git_prompt_show_informative_status 1
-	set -g __fish_git_prompt_showdirtystate 'yes'
-	set -g __fish_git_prompt_showstashstate 'yes'
-	set -g __fish_git_prompt_showuntrackedfiles 'yes'
-	set -g __fish_git_prompt_showupstream 'yes'
+	if [ "$theme_display_padlock" = 'yes' ]
+	set -g __octofish_git_prompt_show_informative_status 1
+	set -g __octofish_git_prompt_showdirtystate 'yes'
+	set -g __octofish_git_prompt_showstashstate 'yes'
+	set -g __octofish_git_prompt_showuntrackedfiles 'yes'
+	set -g __octofish_git_prompt_showupstream 'yes'
 
-	set -g __fish_git_prompt_showupstream "informative"
-	set -g __fish_git_prompt_char_upstream_ahead "↑"
-	set -g __fish_git_prompt_char_upstream_behind "↓"
-	set -g __fish_git_prompt_char_upstream_prefix ""
+	set -g __octofish_git_prompt_showupstream "informative"
+	set -g __octofish_git_prompt_char_upstream_ahead "↑"
+	set -g __octofish_git_prompt_char_upstream_behind "↓"
+	set -g __octofish_git_prompt_char_upstream_prefix ""
 
-	set -g __fish_git_prompt_char_stagedstate "→"
-	set -g __fish_git_prompt_char_dirtystate "⚡"
-	set -g __fish_git_prompt_char_untrackedfiles "☡"
-	set -g __fish_git_prompt_char_stashstate '↩'
-	set -g __fish_git_prompt_char_conflictedstate "✖"
-	set -g __fish_git_prompt_char_cleanstate "✔"
+	set -g __octofish_git_prompt_char_stagedstate "→"
+	set -g __octofish_git_prompt_char_dirtystate "⚡"
+	set -g __octofish_git_prompt_char_untrackedfiles "☡"
+	set -g __octofish_git_prompt_char_stashstate '↩'
+	set -g __octofish_git_prompt_char_conflictedstate "✖"
+	set -g __octofish_git_prompt_char_cleanstate "✔"
 
 	printf "%s" (prompt_cmd_duration)
 
@@ -451,7 +452,7 @@ function fish_right_prompt --description 'Write out the right side prompt'
 		set short_sha $repo_info[5]
 	end
 
-	set -l rbc (__fish_git_prompt_operation_branch_bare $repo_info)
+	set -l rbc (__octofish_git_prompt_operation_branch_bare $repo_info)
 	set -l r $rbc[1] # current operation
 	set -l b $rbc[2] # current branch
 	set -l detached $rbc[3]
@@ -467,7 +468,7 @@ function fish_right_prompt --description 'Write out the right side prompt'
 	set -l untrackedfiles
 	set -l clean no
 
-	__fish_git_prompt_validate_chars
+	__octofish_git_prompt_validate_chars
 
 	if test "true" = $inside_worktree
 		set changedFiles (command git diff --name-status | cut -c 1-2)
@@ -482,8 +483,8 @@ function fish_right_prompt --description 'Write out the right side prompt'
 			set clean yes
 		end
 
-		if test -n "$__fish_git_prompt_showupstream" -o "$__fish_git_prompt_show_informative_status"
-			set p (__fish_git_prompt_show_upstream)
+		if test -n "$__octofish_git_prompt_showupstream" -o "$__octofish_git_prompt_show_informative_status"
+			set p (__octofish_git_prompt_show_upstream)
 		end
 	end
 
@@ -495,7 +496,7 @@ function fish_right_prompt --description 'Write out the right side prompt'
 
 	if test $clean = yes
 		prompt_arrow_right_close fdf6e3 green
-		printf $__fish_git_prompt_char_cleanstate
+		printf $__octofish_git_prompt_char_cleanstate
 	end
 
 	set -l branch_color_bg 2aa198
@@ -512,22 +513,22 @@ function fish_right_prompt --description 'Write out the right side prompt'
 	
 		if test $stagedstate -gt 0
 			prompt_arrow_right_close 859900 black
-			printf "$__fish_git_prompt_char_stagedstate$stagedstate"
+			printf "$__octofish_git_prompt_char_stagedstate$stagedstate"
 		end
 
 		if test $invalidstate -gt 0
 			prompt_arrow_right_close red white
-			printf "$__fish_git_prompt_char_conflictedstate$invalidstate"
+			printf "$__octofish_git_prompt_char_conflictedstate$invalidstate"
 		end
 
 		if test $dirtystate -gt 0
 			prompt_arrow_right_close ffffff black
-			printf "$__fish_git_prompt_char_dirtystate$dirtystate"
+			printf "$__octofish_git_prompt_char_dirtystate$dirtystate"
 		end
 
 		if test $untrackedfiles -gt 0
 			prompt_arrow_right_close 666666 white
-			printf "$__fish_git_prompt_char_untrackedfiles$untrackedfiles"
+			printf "$__octofish_git_prompt_char_untrackedfiles$untrackedfiles"
 		end
 
 	end
@@ -545,4 +546,5 @@ function fish_right_prompt --description 'Write out the right side prompt'
 	set -e __octofish_RIGHT_BCOLOR
 	printf " "
 	set_color -b normal normal
+	end
 end

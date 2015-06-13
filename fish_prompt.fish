@@ -13,8 +13,6 @@
 # You can override some default options in your config.fish:
 #
 #     set -g theme_display_git no
-#     set -g theme_display_git_untracked no
-#     set -g theme_display_hg yes
 #     set -g theme_display_virtualenv no
 #     set -g theme_display_ruby no
 #     set -g theme_display_padlock yes
