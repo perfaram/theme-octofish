@@ -52,5 +52,8 @@ You can override some default options in your `config.fish`:
     set -g theme_display_ruby no #Ruby version
     set -g theme_display_padlock yes #Padlock (when PWD is locked for writing)
 
+--------
+###### Published in the hope that it will be useful
+
 [patching]:   https://powerline.readthedocs.org/en/latest/fontpatching.html
 [fonts]:      https://github.com/Lokaltog/powerline-fonts
